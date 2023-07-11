@@ -1,0 +1,38 @@
+on: [ push ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v3 
+      
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      - name: Install Dependencies and CDK
+        run: |
+          npm install -g aws-cdk
+          npm install
+
+      - name: Assume Role
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/github-actions-role
+
+      - name: Test
+        run: |
+          npm t
+
+      - name: Build and Deploy
+        run: |
+          cdk deploy \
+            --require-approval never
