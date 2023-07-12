@@ -3,10 +3,10 @@ import { Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb'
 
-export interface DatabaseProps {
-	// Include any necessary properties to build the Database
-}
+// Props for the Database Construct
+export interface DatabaseProps {}
 
+// Construct for the Database
 export class Database extends Construct {
 
 	// Accessible properties by the parent
