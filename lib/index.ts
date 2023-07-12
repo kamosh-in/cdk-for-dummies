@@ -3,6 +3,7 @@ import { App, Stack, StackProps } from 'aws-cdk-lib'
 
 // Local imports
 import { Database } from './database'
+import { Api } from './api'
 
 export class CdkStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -10,5 +11,6 @@ export class CdkStack extends Stack {
 		
 		// Initialize Constructs that build the Application
 		new Database(this, 'Database')
+		new Api(this, 'Api')
   }
 }
