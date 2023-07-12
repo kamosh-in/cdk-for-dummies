@@ -1,4 +1,4 @@
-// AWS CDK Library
+// AWS CDK Libraries
 import { App } from 'aws-cdk-lib'
 
 // Local imports

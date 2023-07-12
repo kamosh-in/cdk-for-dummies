@@ -1,13 +1,14 @@
+// AWS CDK Libraries
 import { Stack } from 'aws-cdk-lib'
-import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb'
 import { Construct } from 'constructs'
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb'
 
 export interface DatabaseProps {
 	// Include any necessary properties to build the Database
 }
 
 export class Database extends Construct {
-	
+
 	// Accessible properties by the parent
 	table: Table
 
