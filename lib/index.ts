@@ -10,7 +10,10 @@ export class CdkStack extends Stack {
     super(scope, id, props)
 		
 		// Initialize Constructs that build the Application
-		new Database(this, 'Database')
-		new Api(this, 'Api')
+		const { table } = new Database(this, 'Database')
+		
+		new Api(this, 'Api', {
+			table
+		})
   }
 }
