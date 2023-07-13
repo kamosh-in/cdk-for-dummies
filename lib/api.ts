@@ -15,8 +15,8 @@ export class Api extends Construct {
   constructor(scope: Stack, id: string, props?: ApiProps) {
     super(scope, id)
 
-		const handler = new NodejsFunction(this, 'HelloFunction', {
-			entry: path.resolve(__dirname,'../src/hello.ts')
+		const handler = new NodejsFunction(this, 'Handler', {
+			entry: path.resolve(__dirname,'../src/index.ts')
 		})
 
 		new LambdaRestApi(this, 'Gateway', {
