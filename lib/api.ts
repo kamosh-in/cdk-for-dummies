@@ -1,6 +1,7 @@
 // AWS CDK Libraries
 import { Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
+import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 
 // Additional Libraries
@@ -14,8 +15,12 @@ export class Api extends Construct {
   constructor(scope: Stack, id: string, props?: ApiProps) {
     super(scope, id)
 
-		new NodejsFunction(this, 'HelloFunction', {
+		const handler = new NodejsFunction(this, 'HelloFunction', {
 			entry: path.resolve(__dirname,'../src/hello.ts')
+		})
+
+		new LambdaRestApi(this, 'Gateway', {
+			handler
 		})
   }
 }
