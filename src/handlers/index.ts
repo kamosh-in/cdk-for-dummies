@@ -1,5 +1,5 @@
 // AWS Lambda Type Packages
-import { APIGatewayProxyHandler } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyHandlerV2, APIGatewayProxyResult } from 'aws-lambda'
 
 // AWS SDK Packages
 import { ScanCommand } from '@aws-sdk/client-dynamodb'
@@ -8,10 +8,8 @@ import { ScanCommand } from '@aws-sdk/client-dynamodb'
 import { ddbDocClient } from '../lib/aws'
 import { TABLE_NAME } from '../lib/env'
 
-export const handler: APIGatewayProxyHandler = async (event, context, callback) => {
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 	console.info(`EVENT: \n ${JSON.stringify(event, null, 2)}`)
-	console.info(`CONTEXT: \n ${JSON.stringify(context, null, 2)}`)
-	console.info(`CALLBACK: \n ${JSON.stringify(callback, null, 2)}`)
 
 	const result = await ddbDocClient.send(new ScanCommand({
 		AttributesToGet: [
@@ -20,10 +18,12 @@ export const handler: APIGatewayProxyHandler = async (event, context, callback) 
 		TableName: TABLE_NAME,
 	}))
 
+	const { Items } = result
+
 	return {
 		statusCode: 200,
 		body: JSON.stringify({
-			Items: result.Items
+			Items
 		}, null, 2)
 	}
 };
