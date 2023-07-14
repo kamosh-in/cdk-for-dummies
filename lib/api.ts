@@ -1,11 +1,11 @@
-// AWS CDK Libraries
+// AWS CDK Packages
 import { Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway'
 import { Table } from 'aws-cdk-lib/aws-dynamodb'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 
-// Additional Libraries
+// Additional Packages
 import path from 'path'
 
 // Props for the Api Construct
@@ -19,7 +19,10 @@ export class Api extends Construct {
     super(scope, id)
 
 		const handler = new NodejsFunction(this, 'Handler', {
-			entry: path.resolve(__dirname,'../src/index.ts')
+			entry: path.resolve(__dirname,'../src/index.ts'),
+			environment: {
+				TABLE_NAME: props.table.tableName
+			}
 		})
 
 		props.table.grantReadWriteData(handler)

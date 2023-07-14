@@ -1,4 +1,4 @@
-// AWS CDK Libraries
+// AWS CDK Packages
 import { Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb'

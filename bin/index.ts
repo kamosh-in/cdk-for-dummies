@@ -1,7 +1,7 @@
-// AWS CDK Libraries
+// AWS CDK Packages
 import { App } from 'aws-cdk-lib'
 
-// Local imports
+// Local Packages
 import { CdkStack } from '../lib'
 
 // Initialize the CDK App
