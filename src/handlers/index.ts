@@ -22,7 +22,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		statusCode: 200,
 		body: JSON.stringify({
 			message: 'This is the Scan result',
-			result
+			result: result.Items
 		}, null, 2)
 	}
 };
