@@ -1,7 +1,7 @@
 import { handler } from '../src/handlers'
 import { ScanCommandOutput } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from '../src/lib/aws';
-import { APIGatewayProxyEvent, Context, Callback, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const scanCommandMock: ScanCommandOutput = {
 	$metadata: {},
@@ -12,8 +12,8 @@ const scanCommandMock: ScanCommandOutput = {
 		},
 		{
 			Id: 'baz',
-			Value: 'qux'
-		}
+			Value: 'qux',
+		},
 	]
 }
 
@@ -33,9 +33,9 @@ test('Should succeed on well-formatted request', async () => {
 	const { Items } = scanCommandMock
  
 	expect(result).toStrictEqual({
-		statusCode: 200,
 		body: JSON.stringify({
-			Items
-		}, null, 2)
+			Items,
+		}, null, 2),
+		statusCode: 200,
 	})
 })

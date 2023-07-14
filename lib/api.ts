@@ -1,7 +1,7 @@
 // AWS CDK Packages
-import { Stack } from 'aws-cdk-lib'
+import { Duration, Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway'
+import { LambdaRestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway'
 import { Table } from 'aws-cdk-lib/aws-dynamodb'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 
@@ -10,7 +10,7 @@ import path from 'path'
 
 // Props for the Api Construct
 export interface ApiProps {
-	table: Table
+	table: Table,
 }
 
 // Construct for the Api
@@ -21,14 +21,28 @@ export class Api extends Construct {
 		const handler = new NodejsFunction(this, 'Handler', {
 			entry: path.resolve(__dirname,'../src/handlers/index.ts'),
 			environment: {
-				TABLE_NAME: props.table.tableName
-			}
+				TABLE_NAME: props.table.tableName,
+			},
+		})
+		
+		props.table.grantReadWriteData(handler)
+		
+		const authorizeHandler = new NodejsFunction(this, 'AuthorizeHandler', {
+			entry: path.resolve(__dirname, '../src/handlers/authorize.ts'),
 		})
 
-		props.table.grantReadWriteData(handler)
+		const authorizer = new TokenAuthorizer(this, 'Authorizer', {
+			handler: authorizeHandler,
+			identitySource: 'method.request.header.Authorization',
+			resultsCacheTtl: Duration.minutes(0),
+		})
 
 		new LambdaRestApi(this, 'Gateway', {
-			handler
+			defaultMethodOptions: {
+				authorizer,
+			},
+			handler,
 		})
+
   }
 }

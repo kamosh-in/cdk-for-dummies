@@ -13,7 +13,7 @@ export class DummyStack extends Stack {
 		const { table } = new Database(this, 'Database')
 		
 		new Api(this, 'Api', {
-			table
+			table,
 		})
   }
 }

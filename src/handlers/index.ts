@@ -13,7 +13,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
 	const result = await ddbDocClient.send(new ScanCommand({
 		AttributesToGet: [
-			'Id'
+			'Id',
 		],
 		TableName: TABLE_NAME,
 	}))
@@ -21,9 +21,9 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	const { Items } = result
 
 	return {
-		statusCode: 200,
 		body: JSON.stringify({
-			Items
-		}, null, 2)
+			Items,
+		}, null, 2),
+		statusCode: 200,
 	}
 };
