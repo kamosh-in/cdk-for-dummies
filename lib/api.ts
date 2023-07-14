@@ -19,7 +19,7 @@ export class Api extends Construct {
     super(scope, id)
 
 		const handler = new NodejsFunction(this, 'Handler', {
-			entry: path.resolve(__dirname,'../src/index.ts'),
+			entry: path.resolve(__dirname,'../src/handlers/index.ts'),
 			environment: {
 				TABLE_NAME: props.table.tableName
 			}
