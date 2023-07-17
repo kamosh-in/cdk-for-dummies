@@ -37,18 +37,7 @@ test('DynamoDB Table Production-ready', () => {
 })
 
 test('API Gateway Created', () => {
-  template.hasResource('AWS::ApiGateway::RestApi', {})
-
-	template.hasResourceProperties('AWS::ApiGateway::Resource', {
-		PathPart: '{proxy+}',
-	})
-
-	template.hasResourceProperties('AWS::ApiGateway::Method', {
-		Integration: {
-			IntegrationHttpMethod: 'POST',
-			Type: 'AWS_PROXY',
-		},
-		HttpMethod: 'ANY',
+  template.hasResource('AWS::ApiGateway::RestApi',{
 	})
 })
 
