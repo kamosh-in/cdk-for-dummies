@@ -141,7 +141,7 @@ export class Api extends Construct {
 		const { authorizer } = new Authorizer(this, 'Authorizer')
 
 		// REST API with Edge-optimized Endpoint
-		const api = new RestApi(this, 'Gateway', {
+		const api = new RestApi(this, 'Api', {
 
 			defaultMethodOptions: {
 

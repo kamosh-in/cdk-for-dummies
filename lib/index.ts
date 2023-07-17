@@ -10,9 +10,10 @@ export class DummyStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props)
 		
-		// Initialize Constructs that build the Application
+		// Initialize Database Construct
 		const { table } = new Database(this, 'Database')
 		
+		// Initialize Api Construct
 		new Api(this, 'Api', {
 			table,
 		})
