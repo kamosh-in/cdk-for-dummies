@@ -1,5 +1,5 @@
 // AWS CDK Packages
-import { Stack } from 'aws-cdk-lib'
+import { Duration, Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import { LambdaRestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway'
 import { Table } from 'aws-cdk-lib/aws-dynamodb'
@@ -42,7 +42,8 @@ export class Api extends Construct {
 
 		const authorizer = new TokenAuthorizer(this, 'Authorizer', {
 			handler: authorizeHandler,
-			identitySource: 'method.request.header.Authorization'
+			identitySource: 'method.request.header.Authorization',
+			resultsCacheTtl: Duration.minutes(0),
 		})
 
 		new LambdaRestApi(this, 'Gateway', {
