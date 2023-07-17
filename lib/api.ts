@@ -27,7 +27,6 @@ export class Api extends Construct {
 			},
 		})
 		
-		// 
 		props.table.grantReadWriteData(proxyHandler)
 		
 		const token = new Secret(this, 'Token')
@@ -52,6 +51,5 @@ export class Api extends Construct {
 			},
 			handler: proxyHandler,
 		})
-
   }
 }

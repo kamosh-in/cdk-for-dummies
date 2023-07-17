@@ -39,6 +39,7 @@ const getResult = (event: APIGatewayTokenAuthorizerEvent, response: GetSecretVal
 }
 
 export const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
+	console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
 	const input = getInput(SECRET_NAME)
 	const command = getCommand(input)
 	const response = await secretsManagerClient.send(command)
