@@ -1,5 +1,5 @@
 // AWS Lambda Type Packages
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyHandlerV2, APIGatewayProxyResult } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 // AWS SDK Packages
 import { ScanCommand } from '@aws-sdk/client-dynamodb'
