@@ -1,10 +1,10 @@
-// AWS Lambda Type Packages
+// AWS Lambda Type Modules
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
-// AWS SDK Packages
+// AWS SDK Modules
 import { } from '@aws-sdk/client-dynamodb'
 
-// Local Packages
+// Local Modules
 import { } from '../lib/aws'
 import { } from  '../lib/env'
 

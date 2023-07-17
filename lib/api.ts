@@ -1,12 +1,12 @@
-// AWS CDK Packages
+// AWS CDK Modules
 import { Duration, Stack } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import { LambdaRestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway'
+import { LambdaRestApi, RestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway'
 import { Table } from 'aws-cdk-lib/aws-dynamodb'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager'
 
-// Additional Packages
+// Additional Modules
 import path from 'path'
 
 // Props for the Api Construct
@@ -46,11 +46,12 @@ export class Api extends Construct {
 			resultsCacheTtl: Duration.minutes(0),
 		})
 
-		new LambdaRestApi(this, 'Gateway', {
+		const api = new RestApi(this, 'Gateway', {
 			defaultMethodOptions: {
 				authorizer,
 			},
-			handler: proxyHandler,
 		})
+
+
   }
 }

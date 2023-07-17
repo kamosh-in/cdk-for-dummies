@@ -1,10 +1,10 @@
-// AWS CDK Packages
+// AWS CDK Modules
 import { App } from 'aws-cdk-lib'
 
 // CDK Assertion Testing
 import { Template } from 'aws-cdk-lib/assertions'
 
-// Local Packages
+// Local Modules
 import { DummyStack } from '../lib'
 
 const app = new App()

@@ -1,10 +1,10 @@
-// AWS Lambda Type Packages
+// AWS Lambda Type Modules
 import { APIGatewayTokenAuthorizerEvent, APIGatewayAuthorizerResult } from 'aws-lambda'
 
-// AWS SDK Packages
+// AWS SDK Modules
 import { GetSecretValueCommand, GetSecretValueCommandInput, GetSecretValueCommandOutput } from '@aws-sdk/client-secrets-manager'
 
-// Local Packages
+// Local Modules
 import { secretsManagerClient } from '../lib/aws/'
 import { SECRET_NAME } from  '../lib/env'
 

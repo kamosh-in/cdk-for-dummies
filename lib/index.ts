@@ -1,7 +1,7 @@
-// AWS CDK Packages
+// AWS CDK Modules
 import { App, Stack, StackProps } from 'aws-cdk-lib'
 
-// Local Packages
+// Local Modules
 import { Database } from './database'
 import { Api } from './api'
 
