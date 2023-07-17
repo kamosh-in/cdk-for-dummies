@@ -109,7 +109,7 @@ class Authorizer extends Construct {
 		token.grantRead(authorizeHandler)
 
 		// API Gateway Authorizer component to attach to API methods
-		this.authorizer = new TokenAuthorizer(this, '', {
+		this.authorizer = new TokenAuthorizer(this, 'Authorizer', {
 			handler: authorizeHandler,
 			identitySource: 'method.request.header.Authorization',
 			resultsCacheTtl: Duration.minutes(0),
