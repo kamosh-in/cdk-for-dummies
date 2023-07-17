@@ -5,6 +5,7 @@ import { App, Stack, StackProps } from 'aws-cdk-lib'
 import { Database } from './database'
 import { Api } from './api'
 
+// Stack for the App
 export class DummyStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props)
