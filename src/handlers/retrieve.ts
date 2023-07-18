@@ -2,7 +2,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 // AWS SDK Modules
-import { } from '@aws-sdk/client-dynamodb'
+import { } from '@aws-sdk/lib-dynamodb'
 
 // Local Modules
 import { } from '../lib/aws'
