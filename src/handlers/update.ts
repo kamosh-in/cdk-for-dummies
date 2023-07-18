@@ -10,7 +10,11 @@ import { TABLE_NAME } from  '../lib/env'
 
 // Get input for the Put Command
 const getInput = (event: APIGatewayProxyEvent, TableName: string): PutCommandInput => {
-	const { Item } = JSON.parse(event.body as string) && event.pathParameters
+	let { Item } = JSON.parse(event.body as string)
+	Item = {
+		...event.pathParameters,
+		...Item,
+	}
 	return {
 
 		// Prevents creating a new item
