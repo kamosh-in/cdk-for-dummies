@@ -9,8 +9,12 @@ import { ddbDocClient } from '../lib/aws/'
 import { TABLE_NAME } from  '../lib/env'
 
 // Get input for the Put Command
-const getInput = (event: APIGatewayProxyEvent, TableName: string): PutCommandInput => {
-	const { Item } = JSON.parse(event.body as string)
+const getInput = (event: APIGatewayProxyEvent, TableName: string): PutCommandInput => { 
+	const { Item } = JSON.parse(event.body as string, (key, value) => {
+		if (key == '' || key == 'Id' || key == 'Value')
+				return value
+			return
+	})
 	return {
 
 		// Prevents overwriting an existing item
