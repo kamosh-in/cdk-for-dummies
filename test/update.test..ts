@@ -5,7 +5,7 @@ import { APIGatewayProxyEvent } from 'aws-lambda'
 import { PutCommandOutput } from '@aws-sdk/lib-dynamodb'
 
 // Local Modules
-import { handler } from '../src/handlers/create'
+import { handler } from '../src/handlers/update'
 import { ddbDocClient } from '../src/lib/aws'
 
 // A mocked output for Put Command
@@ -27,15 +27,17 @@ test('Should succeed on well-formatted request', async () => {
 	const event = {
 		body: JSON.stringify({
 			Item: {
-				Id: 'foo',
 				Value: 'bar',
 			},
 		}),
-	} as APIGatewayProxyEvent
+		pathParameters: {
+			Id: 'foo',
+		},
+	} as unknown as APIGatewayProxyEvent
 
 	const expectedResult = {
 		body: JSON.stringify({
-			message: 'Create succeeded'
+			message: 'Update succeeded'
 		}, null, 2),
 		statusCode: 200,
 	}

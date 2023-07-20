@@ -2,20 +2,20 @@
 import { APIGatewayProxyEvent } from 'aws-lambda'
 
 // AWS SDK Modules
-import { PutCommandOutput } from '@aws-sdk/lib-dynamodb'
+import { DeleteCommandOutput } from '@aws-sdk/lib-dynamodb'
 
 // Local Modules
-import { handler } from '../src/handlers/create'
+import { handler } from '../src/handlers/delete'
 import { ddbDocClient } from '../src/lib/aws'
 
-// A mocked output for Put Command
-const putCommandMock: PutCommandOutput = {
+// A mocked output for Delete Command
+const deleteCommandMock: DeleteCommandOutput = {
 	$metadata: {},
 }
 
 // Initialize before each test
 beforeAll(() => {
-    jest.spyOn(ddbDocClient, 'send').mockImplementation(() => putCommandMock)
+    jest.spyOn(ddbDocClient, 'send').mockImplementation(() => deleteCommandMock)
 });
 
 // Cleanup after each test
@@ -25,17 +25,14 @@ afterAll(() => {
 
 test('Should succeed on well-formatted request', async () => {
 	const event = {
-		body: JSON.stringify({
-			Item: {
-				Id: 'foo',
-				Value: 'bar',
-			},
-		}),
-	} as APIGatewayProxyEvent
+		pathParameters: {
+			Id: 'foo',
+		},
+	} as unknown as APIGatewayProxyEvent
 
 	const expectedResult = {
 		body: JSON.stringify({
-			message: 'Create succeeded'
+			message: 'Delete succeeded'
 		}, null, 2),
 		statusCode: 200,
 	}
