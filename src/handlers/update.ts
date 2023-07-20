@@ -10,21 +10,18 @@ import { TABLE_NAME } from  '../lib/env'
 
 // Get input for the Put Command
 const getInput = (event: APIGatewayProxyEvent, TableName: string): PutCommandInput => {
-	let { Item } = JSON.parse(event.body as string, (key, value) => {
-		if (key == '' || key == 'Value')
-				return value
-			return
-	})
-	Item = {
-		...event.pathParameters,
-		...Item,
-	}
+	const { Item } = JSON.parse(event.body as string)
+	const { Id } = event.pathParameters as { Id: string }
+	const { Value } = Item
 	return {
 
 		// Prevents creating a new item
 		ConditionExpression: 'attribute_exists(Id)',
 
-		Item,
+		Item: {
+			Id,
+			Value,
+		},
 		TableName,
 	}
 }
