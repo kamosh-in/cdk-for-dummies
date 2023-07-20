@@ -24,7 +24,7 @@ const getCommand = (input: ScanCommandInput): ScanCommand => {
 const getResult = (statusCode: number, response?: ScanCommandOutput): APIGatewayProxyResult => {
 	let message
 	if (statusCode === 200)
-		message = response
+		message = response?.Items
 	else
 		message = 'Read failed'
 	return {
