@@ -1,14 +1,20 @@
-import { handler } from '../src/handlers/read'
-import { ScanCommandOutput } from '@aws-sdk/lib-dynamodb'
-import { ddbDocClient } from '../src/lib/aws';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+// AWS Lambda Type Modules
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
+// AWS SDK Modules
+import { ScanCommandOutput } from '@aws-sdk/lib-dynamodb'
+
+// Local Modules
+import { handler } from '../src/handlers/read'
+import { ddbDocClient } from '../src/lib/aws';
+
+// A mocked output for Scan Command
 const scanCommandMock: ScanCommandOutput = {
 	$metadata: {},
 	Items: [
 		{
 			Id: 'foo',
-			Value: 'bar'
+			Value: 'bar',
 		},
 		{
 			Id: 'baz',
@@ -17,10 +23,12 @@ const scanCommandMock: ScanCommandOutput = {
 	]
 }
 
+// Initialize before each test
 beforeAll(() => {
-    jest.spyOn(ddbDocClient, 'send').mockImplementation(() => scanCommandMock);
+    jest.spyOn(ddbDocClient, 'send').mockImplementation(() => scanCommandMock)
 });
 
+// Cleanup after each test
 afterAll(() => {
     jest.restoreAllMocks();
 });
@@ -28,15 +36,14 @@ afterAll(() => {
 test('Should succeed on well-formatted request', async () => {
 	const event = {} as APIGatewayProxyEvent
 
-	const result = await handler(event)
+	const expectedResult: APIGatewayProxyResult = {
+		body: JSON.stringify({
+			message: scanCommandMock.Items,
+		}, null, 2),
+		statusCode: 200,
+	}
 
-	const { Items } = scanCommandMock
+	const result = await handler(event)
  
-	// This is commented until read has been implemented
-	// expect(result).toStrictEqual({
-	// 	body: JSON.stringify({
-	// 		Items,
-	// 	}, null, 2),
-	// 	statusCode: 200,
-	// })
+	expect(result).toStrictEqual(expectedResult)
 })
