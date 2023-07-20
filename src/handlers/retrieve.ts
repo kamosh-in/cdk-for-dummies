@@ -2,30 +2,54 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 // AWS SDK Modules
-import { } from '@aws-sdk/lib-dynamodb'
+import { GetCommand, GetCommandInput, GetCommandOutput } from '@aws-sdk/lib-dynamodb'
 
 // Local Modules
-import { } from '../lib/aws'
-import { } from  '../lib/env'
+import { ddbDocClient } from '../lib/aws'
+import { TABLE_NAME } from  '../lib/env'
 
-const getInput = () => {
-
+const getInput = (event: APIGatewayProxyEvent, TableName: string): GetCommandInput => {
+	const Key = event.pathParameters as { Id: string }
+	return {
+		AttributesToGet: [
+			'Id',
+			'Value',
+		],
+		Key,
+		TableName,
+	}
 }
 
-const getCommand = () => {
-
+const getCommand = (input: GetCommandInput): GetCommand => {
+	return new GetCommand(input)
 }
 
-const getResult = () => {
-
+const getResult = (statusCode: number, response?: GetCommandOutput): APIGatewayProxyResult => {
+	let message
+	if (statusCode === 200)
+		message = response?.Item
+	else
+		message = 'Retrieve failed'
+	return {
+		statusCode,
+		body: JSON.stringify({
+			message
+		}, null, 2)
+	}
 }
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-	console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
-	return {
-		statusCode: 200,
-		body: JSON.stringify({
-			message: 'Hello World!'
-		})
+	try {
+		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
+		const input = getInput(event, TABLE_NAME)
+		console.log(`INPUT:\n${JSON.stringify(input, null, 2)}`)
+		const command = getCommand(input)
+		console.log(`COMMAND:\n${JSON.stringify(command, null, 2)}`)
+		const response = await ddbDocClient.send(command)
+		console.log(`RESPONSE:\n${JSON.stringify(response, null, 2)}`)
+		return getResult(200, response)
+	} catch (error) {
+		console.log(`ERROR:\n${JSON.stringify(error, null, 2)}`)
+		return getResult(400)
 	}
 }
