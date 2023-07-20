@@ -34,10 +34,10 @@ const getResult = (statusCode: number, response?: GetCommandOutput): APIGatewayP
 	else
 		message = 'Retrieve failed'
 	return {
-		statusCode,
 		body: JSON.stringify({
 			message
-		}, null, 2)
+		}, null, 2),
+		statusCode,
 	}
 }
 

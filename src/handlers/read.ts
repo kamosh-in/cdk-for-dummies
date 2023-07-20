@@ -31,10 +31,10 @@ const getResult = (statusCode: number, response?: ScanCommandOutput): APIGateway
 	else
 		message = 'Read failed'
 	return {
-		statusCode,
 		body: JSON.stringify({
 			message
-		}, null, 2)
+		}, null, 2),
+		statusCode,
 	}
 }
 

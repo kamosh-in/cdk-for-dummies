@@ -39,10 +39,10 @@ const getResult = (statusCode: number): APIGatewayProxyResult => {
 	else
 		message = 'Update failed'
 	return {
-		statusCode,
 		body: JSON.stringify({
 			message
-		}, null, 2)
+		}, null, 2),
+		statusCode,
 	}
 }
 

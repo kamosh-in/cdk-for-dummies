@@ -23,21 +23,21 @@ const getCommand = (input: GetSecretValueCommandInput): GetSecretValueCommand =>
 // Get result for API Gateway Authorizer
 const getResult = (event: APIGatewayTokenAuthorizerEvent, response: GetSecretValueCommandOutput): APIGatewayAuthorizerResult => {
 	let Effect = 'Deny'
-	if (response.SecretString == event.authorizationToken)
+	if (response.SecretString === event.authorizationToken)
 		Effect = 'Allow'
 
 	return {
-		principalId: 'user',
 		policyDocument: {
-			Version: '2012-10-17',
 			Statement: [
 				{
 					Action: 'execute-api:Invoke',
 					Effect,
 					Resource: event.methodArn
 				}
-			]
-		}
+			],
+			Version: '2012-10-17',
+		},
+		principalId: 'user',
 	}
 }
 

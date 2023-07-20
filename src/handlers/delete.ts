@@ -30,10 +30,10 @@ const getResult = (statusCode: number) => {
 	else
 		message = 'Delete failed'
 	return {
-		statusCode,
 		body: JSON.stringify({
 			message
-		}, null, 2)
+		}, null, 2),
+		statusCode,
 	}
 }
 
