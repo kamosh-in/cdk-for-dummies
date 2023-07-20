@@ -8,6 +8,7 @@ import { ScanCommand, ScanCommandInput, ScanCommandOutput } from '@aws-sdk/lib-d
 import { ddbDocClient } from '../lib/aws'
 import { TABLE_NAME } from  '../lib/env'
 
+// Get input for the Scan Command
 const getInput = (event: APIGatewayProxyEvent, TableName: string): ScanCommandInput => {
 	return {
 		AttributesToGet: [
@@ -17,10 +18,12 @@ const getInput = (event: APIGatewayProxyEvent, TableName: string): ScanCommandIn
 	}
 }
 
+// Get ScanCommand for the DynamoDB Document Client to send
 const getCommand = (input: ScanCommandInput): ScanCommand => {
 	return new ScanCommand(input)
 }
 
+// Get result for API Gateway
 const getResult = (statusCode: number, response?: ScanCommandOutput): APIGatewayProxyResult => {
 	let message
 	if (statusCode === 200)
@@ -35,6 +38,7 @@ const getResult = (statusCode: number, response?: ScanCommandOutput): APIGateway
 	}
 }
 
+// Handler for GET /
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 	try {
 		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)

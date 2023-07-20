@@ -8,6 +8,7 @@ import { GetCommand, GetCommandInput, GetCommandOutput } from '@aws-sdk/lib-dyna
 import { ddbDocClient } from '../lib/aws'
 import { TABLE_NAME } from  '../lib/env'
 
+// Get input for the Get Command
 const getInput = (event: APIGatewayProxyEvent, TableName: string): GetCommandInput => {
 	const Key = event.pathParameters as { Id: string }
 	return {
@@ -20,10 +21,12 @@ const getInput = (event: APIGatewayProxyEvent, TableName: string): GetCommandInp
 	}
 }
 
+// Get GetCommand for the DynamoDB Document Client to send
 const getCommand = (input: GetCommandInput): GetCommand => {
 	return new GetCommand(input)
 }
 
+// Get result for API Gateway
 const getResult = (statusCode: number, response?: GetCommandOutput): APIGatewayProxyResult => {
 	let message
 	if (statusCode === 200)
@@ -38,6 +41,7 @@ const getResult = (statusCode: number, response?: GetCommandOutput): APIGatewayP
 	}
 }
 
+// Handler for GET /{Id}
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 	try {
 		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)

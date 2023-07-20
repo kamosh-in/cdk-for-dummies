@@ -8,6 +8,7 @@ import { DeleteCommand, DeleteCommandInput } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from '../lib/aws'
 import { TABLE_NAME } from  '../lib/env'
 
+// Get input for the Delete Command
 const getInput = (event: APIGatewayProxyEvent, TableName: string): DeleteCommandInput => {
 	const Key = event.pathParameters as { Id: string }
 	return {
@@ -16,10 +17,12 @@ const getInput = (event: APIGatewayProxyEvent, TableName: string): DeleteCommand
 	}
 }
 
+// Get DeleteCommand for the DynamoDB Document Client to send
 const getCommand = (input: DeleteCommandInput): DeleteCommand => {
 	return new DeleteCommand(input)
 }
 
+// Get result for API Gateway
 const getResult = (statusCode: number) => {
 	let message
 	if (statusCode === 200)
@@ -34,6 +37,7 @@ const getResult = (statusCode: number) => {
 	}
 }
 
+// Handler for DELETE /{Id}
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 	try {
 		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
