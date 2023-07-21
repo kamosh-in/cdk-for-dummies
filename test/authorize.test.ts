@@ -14,6 +14,39 @@ const getSecretValueCommandMock: GetSecretValueCommandOutput = {
 	SecretString: 'foo',
 }
 
+// Constant Method ARN for tests
+const METHOD_ARN = 'bar'
+
+// Assert positive tests to this result
+const successfulResult: APIGatewayAuthorizerResult = {
+	policyDocument: {
+		Version: '2012-10-17',
+		Statement: [
+			{
+				Action: 'execute-api:Invoke',
+				Effect: 'Allow',
+				Resource: METHOD_ARN,
+			}
+		],
+	},
+	principalId: 'user',
+}
+
+// Assert negative tests to this result
+const failedResult: APIGatewayAuthorizerResult = {
+	policyDocument: {
+		Version: '2012-10-17',
+		Statement: [
+			{
+				Action: 'execute-api:Invoke',
+				Effect: 'Deny',
+				Resource: METHOD_ARN,
+			}
+		],
+	},
+	principalId: 'user',
+}
+
 // Initialize before each test
 beforeAll(() => {
     jest.spyOn(secretsManagerClient, 'send').mockImplementation(() => getSecretValueCommandMock)
@@ -27,75 +60,34 @@ afterAll(() => {
 test('Should succeed on correct token', async () => {
 	const event: APIGatewayTokenAuthorizerEvent = {
 		authorizationToken: 'foo',
-		methodArn: 'bar',
+		methodArn: METHOD_ARN,
 		type: 'TOKEN',
 	}
 
-	const expectedResult = {
-		policyDocument: {
-			Version: '2012-10-17',
-			Statement: [
-				{
-					Action: 'execute-api:Invoke',
-					Effect: 'Allow',
-					Resource: event.methodArn,
-				}
-			],
-		},
-		principalId: 'user',
-	}
-
 	const result = await handler(event)
-	expect(result).toStrictEqual(expectedResult)
+
+	expect(result).toStrictEqual(successfulResult)
 })
 
 test('Should fail on incorrect token', async () => {
 	const event: APIGatewayTokenAuthorizerEvent = {
 		authorizationToken: 'baz',
-		methodArn: 'bar',
+		methodArn: METHOD_ARN,
 		type: 'TOKEN',
 	}
 
-	const expectedResult = {
-		policyDocument: {
-			Version: '2012-10-17',
-			Statement: [
-				{
-					Action: 'execute-api:Invoke',
-					Effect: 'Deny',
-					Resource: event.methodArn,
-				}
-			],
-		},
-		principalId: 'user',
-	}
-
 	const result = await handler(event)
-	console.log(result)
-	expect(result).toStrictEqual(expectedResult)
+
+	expect(result).toStrictEqual(failedResult)
 })
 
 test('Should fail on no token', async () => {
 	const event = {
-		methodArn: 'bar',
+		methodArn: METHOD_ARN,
 		type: 'TOKEN',
 	} as APIGatewayTokenAuthorizerEvent
 
-	const expectedResult: APIGatewayAuthorizerResult = {
-		policyDocument: {
-			Version: '2012-10-17',
-			Statement: [
-				{
-					Action: 'execute-api:Invoke',
-					Effect: 'Deny',
-					Resource: event.methodArn,
-				}
-			],
-		},
-		principalId: 'user',
-	}
-
 	const result = await handler(event)
-	console.log(result)
-	expect(result).toStrictEqual(expectedResult)
+
+	expect(result).toStrictEqual(failedResult)
 })

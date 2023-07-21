@@ -16,15 +16,15 @@ test('DynamoDB Table Created', () => {
 		AttributeDefinitions: [
 		 {
 			AttributeName: 'Id',
-			AttributeType: 'S'
+			AttributeType: 'S',
 		 }
 		],
 		BillingMode: 'PAY_PER_REQUEST',
 		KeySchema: [
 			{
 			 AttributeName: 'Id',
-			 KeyType: 'HASH'
-			}
+			 KeyType: 'HASH',
+			},
 		 ],
   })
 })
@@ -37,8 +37,7 @@ test('DynamoDB Table Production-ready', () => {
 })
 
 test('API Gateway Created', () => {
-  template.hasResource('AWS::ApiGateway::RestApi',{
-	})
+  template.hasResource('AWS::ApiGateway::RestApi', {})
 })
 
 test('API Gateway Production-ready', () => {

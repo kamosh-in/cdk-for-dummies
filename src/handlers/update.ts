@@ -10,18 +10,26 @@ import { TABLE_NAME } from  '../lib/env'
 
 // Get input for the Put Command
 const getInput = (event: APIGatewayProxyEvent, TableName: string): PutCommandInput => {
-	const { Item } = JSON.parse(event.body as string)
-	const { Id } = event.pathParameters as { Id: string }
-	const { Value } = Item
+	
+	// Parse event body
+	let { Item } = JSON.parse(event.body as string)
+
+	// Remove all values from Item except Value
+	Item = (({ Value }) => ({ Value }))(Item)
+
+	// From Path Parameters, add the Id to Item
+	Item.Id = (event.pathParameters as {Id: string}).Id
+
+	// If either Id or Value is undefined throw an error
+	if (!Item.Id || !Item.Value)
+		throw Error('Id or Value missing')
+
 	return {
 
 		// Prevents creating a new item
 		ConditionExpression: 'attribute_exists(Id)',
 
-		Item: {
-			Id,
-			Value,
-		},
+		Item,
 		TableName,
 	}
 }
@@ -51,11 +59,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	try {
 		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
 		const input = getInput(event, TABLE_NAME)
-		console.log(`INPUT:\n${JSON.stringify(input, null, 2)}`)
+		// console.log(`INPUT:\n${JSON.stringify(input, null, 2)}`)
 		const command = getCommand(input)
-		console.log(`COMMAND:\n${JSON.stringify(command, null, 2)}`)
+		// console.log(`COMMAND:\n${JSON.stringify(command, null, 2)}`)
 		const response = await ddbDocClient.send(command)
-		console.log(`RESPONSE:\n${JSON.stringify(response, null, 2)}`)
+		// console.log(`RESPONSE:\n${JSON.stringify(response, null, 2)}`)
 		return getResult(200)
 	} catch (error) {
 		console.log(`ERROR:\n${JSON.stringify(error, null, 2)}`)

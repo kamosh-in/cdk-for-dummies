@@ -5,7 +5,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { PutCommandOutput } from '@aws-sdk/lib-dynamodb'
 
 // Local Modules
-import { handler } from '../src/handlers/create'
+import { handler } from '../src/handlers/update'
 import { ddbDocClient } from '../src/lib/aws'
 
 // A mocked output for Put Command
@@ -16,7 +16,7 @@ const putCommandMock: PutCommandOutput = {
 // Assert positive tests to this result
 const successfulResult: APIGatewayProxyResult = {
 	body: JSON.stringify({
-		message: 'Create succeeded'
+		message: 'Update succeeded'
 	}, null, 2),
 	statusCode: 200,
 }
@@ -24,7 +24,7 @@ const successfulResult: APIGatewayProxyResult = {
 // Assert negative tests to this result
 const failedResult: APIGatewayProxyResult = {
 	body: JSON.stringify({
-		message: 'Create failed'
+		message: 'Update failed'
 	}, null, 2),
 	statusCode: 400,
 }
@@ -43,11 +43,13 @@ test('Should succeed on well-formatted request', async () => {
 	const event = {
 		body: JSON.stringify({
 			Item: {
-				Id: 'foo',
 				Value: 'bar',
 			},
 		}),
-	} as APIGatewayProxyEvent
+		pathParameters: {
+			Id: 'foo',
+		},
+	} as unknown as APIGatewayProxyEvent
 
 	const result = await handler(event)
  
@@ -61,6 +63,7 @@ test('Should fail on missing Id', async () => {
 				Value: 'bar',
 			},
 		}),
+		pathParameters: {},
 	} as APIGatewayProxyEvent
 
 	const result = await handler(event)
@@ -71,11 +74,12 @@ test('Should fail on missing Id', async () => {
 test('Should fail on missing Value', async () => {
 	const event = {
 		body: JSON.stringify({
-			Item: {
-				Id: 'foo',
-			},
+			Item: {},
 		}),
-	} as APIGatewayProxyEvent
+		pathParameters: {
+			Id: 'foo',
+		},
+	} as unknown as APIGatewayProxyEvent
 
 	const result = await handler(event)
  
@@ -85,7 +89,10 @@ test('Should fail on missing Value', async () => {
 test('Should fail on missing Item', async () => {
 	const event = {
 		body: JSON.stringify({}),
-	} as APIGatewayProxyEvent
+		pathParameters: {
+			Id: 'foo',
+		},
+	} as unknown as APIGatewayProxyEvent
 
 	const result = await handler(event)
  

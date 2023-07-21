@@ -6,7 +6,7 @@ import { GetSecretValueCommand, GetSecretValueCommandInput, GetSecretValueComman
 
 // Local Modules
 import { secretsManagerClient } from '../lib/aws/'
-import { SECRET_NAME } from  '../lib/env'
+import { SECRET_NAME } from '../lib/env'
 
 // Get input for the GetSecretValue Command
 const getInput = (SecretId: string): GetSecretValueCommandInput => {
@@ -43,9 +43,20 @@ const getResult = (event: APIGatewayTokenAuthorizerEvent, response: GetSecretVal
 
 // Handler for Authorization
 export const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
-	console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
-	const input = getInput(SECRET_NAME)
-	const command = getCommand(input)
-	const response = await secretsManagerClient.send(command)
-	return getResult(event, response)
+	try {
+		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
+		const input = getInput(SECRET_NAME)
+		// console.log(`INPUT:\n${JSON.stringify(input, null, 2)}`)
+		const command = getCommand(input)
+		// console.log(`COMMAND:\n${JSON.stringify(command, null, 2)}`)
+		const response = await secretsManagerClient.send(command)
+		// console.log(`RESPONSE:\n${JSON.stringify(response, null, 2)}`)
+		return getResult(event, response)
+	} catch (error) {
+		console.log(`ERROR:\n${JSON.stringify(error, null, 2)}`)
+		return getResult(event, {
+			$metadata: {},
+			SecretString: '',
+		})
+	}
 }

@@ -43,11 +43,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 	try {
 		console.log(`EVENT:\n${JSON.stringify(event, null, 2)}`)
 		const input = getInput(event, TABLE_NAME)
-		console.log(`INPUT:\n${JSON.stringify(input, null, 2)}`)
+		// console.log(`INPUT:\n${JSON.stringify(input, null, 2)}`)
 		const command = getCommand(input)
-		console.log(`COMMAND:\n${JSON.stringify(command, null, 2)}`)
+		// console.log(`COMMAND:\n${JSON.stringify(command, null, 2)}`)
 		const response = await ddbDocClient.send(command)
-		console.log(`RESPONSE:\n${JSON.stringify(response, null, 2)}`)
+		// console.log(`RESPONSE:\n${JSON.stringify(response, null, 2)}`)
 		return getResult(200, response)
 	} catch (error) {
 		console.log(`ERROR:\n${JSON.stringify(error, null, 2)}`)

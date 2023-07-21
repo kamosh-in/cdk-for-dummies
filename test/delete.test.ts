@@ -1,5 +1,5 @@
 // AWS Lambda Type Modules
-import { APIGatewayProxyEvent } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 // AWS SDK Modules
 import { DeleteCommandOutput } from '@aws-sdk/lib-dynamodb'
@@ -11,6 +11,22 @@ import { ddbDocClient } from '../src/lib/aws'
 // A mocked output for Delete Command
 const deleteCommandMock: DeleteCommandOutput = {
 	$metadata: {},
+}
+
+// Assert positive tests to this result
+const successfulResult: APIGatewayProxyResult = {
+	body: JSON.stringify({
+		message: 'Delete succeeded'
+	}, null, 2),
+	statusCode: 200,
+}
+
+// Assert negative tests to this result
+const failedResult: APIGatewayProxyResult = {
+	body: JSON.stringify({
+		message: 'Delete failed'
+	}, null, 2),
+	statusCode: 400,
 }
 
 // Initialize before each test
@@ -30,14 +46,17 @@ test('Should succeed on well-formatted request', async () => {
 		},
 	} as unknown as APIGatewayProxyEvent
 
-	const expectedResult = {
-		body: JSON.stringify({
-			message: 'Delete succeeded'
-		}, null, 2),
-		statusCode: 200,
-	}
+	const result = await handler(event)
+ 
+	expect(result).toStrictEqual(successfulResult)
+})
+
+test('Should fail on missing Id', async () => {
+	const event = {
+		pathParameters: {},
+	} as APIGatewayProxyEvent
 
 	const result = await handler(event)
  
-	expect(result).toStrictEqual(expectedResult)
+	expect(result).toStrictEqual(failedResult)
 })

@@ -23,6 +23,22 @@ const scanCommandMock: ScanCommandOutput = {
 	]
 }
 
+// Assert positive tests to this result
+const successfulResult: APIGatewayProxyResult = {
+	body: JSON.stringify({
+		message: scanCommandMock.Items
+	}, null, 2),
+	statusCode: 200,
+}
+
+// // Assert negative tests to this result
+// const failedResult: APIGatewayProxyResult = {
+// 	body: JSON.stringify({
+// 		message: 'Read failed'
+// 	}, null, 2),
+// 	statusCode: 400,
+// }
+
 // Initialize before each test
 beforeAll(() => {
     jest.spyOn(ddbDocClient, 'send').mockImplementation(() => scanCommandMock)
@@ -36,14 +52,7 @@ afterAll(() => {
 test('Should succeed on well-formatted request', async () => {
 	const event = {} as APIGatewayProxyEvent
 
-	const expectedResult: APIGatewayProxyResult = {
-		body: JSON.stringify({
-			message: scanCommandMock.Items,
-		}, null, 2),
-		statusCode: 200,
-	}
-
 	const result = await handler(event)
  
-	expect(result).toStrictEqual(expectedResult)
+	expect(result).toStrictEqual(successfulResult)
 })
