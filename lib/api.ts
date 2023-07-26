@@ -81,9 +81,7 @@ class Handler extends Construct {
 }
 
 // Props for the Authorizer Construct
-interface AuthorizerProps {
-
-}
+interface AuthorizerProps {}
 
 // Construct for the Authorizer
 class Authorizer extends Construct {
