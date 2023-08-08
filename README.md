@@ -66,7 +66,7 @@ To use the app, look at the CloudFormation Outputs from the terminal.  You will 
 
 The Token Secret String (without the quotation marks) will go in the "Authorization" header of the request.  I recommend [Postman](https://www.postman.com/product/what-is-postman/) to test with.  I have included my Collection in the repository to import into Postman and easily get working with properly-formatted requests.
 
-Once you have imported the Collection, go the Variables tab and replace the dummy values with your Endpoint and Token.
+Once you have imported the Collection, go to the Variables tab and replace the dummy values with your Endpoint and Token.
 
 ![Postman](./img/postman.png)
 
