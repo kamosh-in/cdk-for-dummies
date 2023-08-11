@@ -15,7 +15,7 @@ const getInput = (SecretId: string): GetSecretValueCommandInput => {
 	}
 }
 
-// Get GetSecretValueCommand for the DynamoDB Document Client to send
+// Get GetSecretValueCommand for the Secrets ManagerClient to send
 const getCommand = (input: GetSecretValueCommandInput): GetSecretValueCommand => {
 	return new GetSecretValueCommand(input)
 }
